@@ -31,7 +31,6 @@ export const canvasSlice = createSlice({
 			const [y, x] = action.payload;
 			const item = state.pipes[y][x];
 			const newMap = [...state.pipes];
-			console.log('x')
 			newMap[y][x] = pipeRotations[item];
 
 			state.pipes = newMap;

@@ -1,36 +1,71 @@
 import { useDispatch, useSelector } from 'react-redux';
-import useWebSocket from 'react-use-websocket';
+import useWebSocket, { ReadyState } from 'react-use-websocket';
 
 import GameCanvas from '../../components/gameCanvas';
 import Levels from '../../components/levels';
 import { RootState } from '../../app/store';
 import { rotatePipe, setPipesCanvas } from '../../store/canvas';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect } from 'react';
+import { setMessage, setWebsocketStatus } from '../../store/websocket';
+import { usePrevious } from '../../app/hooks';
+import { Button, DivCentered } from './styles';
 
 export const WEBSOCKET_URL = process.env.REACT_APP_WEBSOCKET_URL || '';
 
 const Canvas = () => {
 	const dispatch = useDispatch();
 	const canvas = useSelector((state: RootState) => state.canvas);
-	const [sentMessage, setSentMessage] = useState('');
+	const websocket = useSelector((state: RootState) => state.webSocket);
 
-	const { sendMessage, lastMessage } = useWebSocket(WEBSOCKET_URL);
+	const { sendMessage, lastMessage, readyState } = useWebSocket(WEBSOCKET_URL, {
+		onOpen: () => dispatch(setWebsocketStatus(connectionStatus)),
+		onClose: () => dispatch(setWebsocketStatus(connectionStatus)),
+	});
+
+	const connectionStatus: any = {
+		[ReadyState.CONNECTING]: 'Connecting',
+		[ReadyState.OPEN]: 'Open',
+		[ReadyState.CLOSING]: 'Closing',
+		[ReadyState.CLOSED]: 'Closed',
+		[ReadyState.UNINSTANTIATED]: 'Uninstantiated',
+	}[readyState];
+
+	const previousConnectionStatus = usePrevious(connectionStatus);
+
+	const sendWebsocketMessage = useCallback(
+		(message: any) => {
+			sendMessage(message);
+			dispatch(setMessage(message));
+		},
+		[dispatch, sendMessage]
+	);
 
 	useEffect(() => {
-		setSentMessage('new 1');
-		sendMessage('new 1');
-	}, [sendMessage]);
-
-	useEffect(() => {
-		if (sentMessage.includes('new')) {
-			setSentMessage('map');
-			sendMessage('map');
+		if (
+			previousConnectionStatus === 'Connecting' &&
+			connectionStatus === 'Open'
+		) {
+			sendWebsocketMessage('new 1');
 		}
-	}, [sendMessage, sentMessage]);
+	}, [
+		connectionStatus,
+		previousConnectionStatus,
+		sendMessage,
+		sendWebsocketMessage,
+	]);
+
+	useEffect(() => {
+		if (websocket.sentMessage.includes('new')) {
+			sendWebsocketMessage('map');
+		}
+	}, [sendMessage, sendWebsocketMessage, websocket.sentMessage]);
 
 	useEffect(() => {
 		const response = lastMessage?.data;
-		if (sentMessage === 'map' && response?.includes(sentMessage)) {
+		if (
+			websocket.sentMessage === 'map' &&
+			response?.includes(websocket.sentMessage)
+		) {
 			const newMapResponseInArr = response?.split('\n').slice(1, -1);
 			if (newMapResponseInArr?.length > 0) {
 				const mappedPipes = newMapResponseInArr.map((row: any) =>
@@ -38,32 +73,50 @@ const Canvas = () => {
 				);
 				dispatch(setPipesCanvas(mappedPipes));
 			}
-		} else if (sentMessage === 'verify' && response?.includes(sentMessage)) {
+		} else if (
+			websocket.sentMessage === 'verify' &&
+			response?.includes(websocket.sentMessage)
+		) {
 			console.log(response);
+		} else if (
+			websocket.sentMessage === 'help' &&
+			response?.includes(websocket.sentMessage)
+		) {
+			alert(response);
 		}
-	}, [dispatch, lastMessage, sentMessage]);
+	}, [dispatch, lastMessage, websocket.sentMessage]);
 
 	const onLevelChange = (num: number) => {
-		console.log(num);
+		sendWebsocketMessage(`new ${num}`);
 	};
 
 	const onPipeRotate = (pipe: [number, number]) => {
-		sendMessage(`rotate ${pipe[1]} ${pipe[0]}`);
+		sendWebsocketMessage(`rotate ${pipe[1]} ${pipe[0]}`);
 		dispatch(rotatePipe(pipe));
-		console.log(pipe);
 	};
 
 	const onVerify = () => {
-		setSentMessage(`verify`);
-		sendMessage(`verify`);
+		sendWebsocketMessage(`verify`);
 	};
 
+	// const onHelp = () => {
+	// 	sendWebsocketMessage(`help`);
+	// };
+
 	return (
-		<div>
-			<h1>Pipes</h1>
-			<Levels level={0} onLevelChange={onLevelChange} />
-			<GameCanvas pipes={canvas.pipes} rotatePipe={onPipeRotate} />
-			<button onClick={onVerify}>VERIFY !</button>
+		<div style={{ width: '800px' }}>
+			<DivCentered>
+				<h1>Pipes</h1>
+			</DivCentered>
+			<DivCentered>
+				<Levels level={0} onLevelChange={onLevelChange} />
+			</DivCentered>
+			<DivCentered style={{ padding: '30px' }}>
+				<GameCanvas pipes={canvas.pipes} rotatePipe={onPipeRotate} />
+			</DivCentered>
+			<DivCentered>
+				<Button onClick={onVerify}>VERIFY !</Button>
+			</DivCentered>
 		</div>
 	);
 };

@@ -9,12 +9,14 @@ const Pipe = styled.div`
 	height: 50px;
 	width: 50px;
 	cursor: pointer;
-	background-color: #b2eef7;
+	background-color: #9df2ff;
 	color: #163240;
 
 	&:hover {
-		background-color: #09d3f2;
+		background-color: #29e2ff;
 	}
+	border-style: solid;
+	border-color: #22c3f47a;
 `;
 
 interface ImageProps {
