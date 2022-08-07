@@ -3,7 +3,7 @@ import { pipeRotations } from '../../helpers/canvasHelper';
 
 export type PipesMap = string[][];
 
-export type Coordinate = [number, number];
+export type Coordinate = number[];
 
 export interface CanvasState {
 	pipes: PipesMap;
@@ -12,16 +12,7 @@ export interface CanvasState {
 }
 
 const initialState: CanvasState = {
-	pipes: [
-		['┛', '┃', '╻', '┗', '╺', '╺', '┏', '╻'],
-		['┣', '╹', '╺', '╋', '┫', '┓', '┃', '╹'],
-		['┏', '┏', '┓', '┏', '━', '╻', '━', '━'],
-		['╹', '┳', '┳', '╻', '╹', '━', '┣', '┛'],
-		['━', '╻', '┻', '┣', '╻', '┳', '┣', '╺'],
-		['┏', '┓', '┃', '┓', '┫', '┻', '╹', '╺'],
-		['┗', '┳', '┳', '┓', '┛', '╋', '┓', '━'],
-		['╻', '┗', '┓', '╺', '╸', '┗', '━', '┏'],
-	],
+	pipes: [],
 	level: 1,
 	rotations: [],
 };
@@ -37,10 +28,11 @@ export const canvasSlice = createSlice({
 			state.level = action.payload;
 		},
 		rotatePipe: (state, action: PayloadAction<[number, number]>) => {
-			const [row, column] = action.payload;
-			const item = state.pipes[row][column];
+			const [y, x] = action.payload;
+			const item = state.pipes[y][x];
 			const newMap = [...state.pipes];
-			newMap[row][column] = pipeRotations[item];
+			console.log('x')
+			newMap[y][x] = pipeRotations[item];
 
 			state.pipes = newMap;
 			state.rotations = [...state.rotations, action.payload];

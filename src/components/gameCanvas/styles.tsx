@@ -9,12 +9,24 @@ const Pipe = styled.div`
 	height: 50px;
 	width: 50px;
 	cursor: pointer;
-	background: #6FCFC4;
+	background-color: #b2eef7;
 	color: #163240;
 
 	&:hover {
-		background-color: #238C9B;
+		background-color: #09d3f2;
 	}
 `;
 
-export { ItemsRow, Pipe };
+interface ImageProps {
+	src: string;
+	col: string;
+	rotation: string;
+}
+
+const Image = styled.img<ImageProps>`
+	src: ${props => props.src};
+	alt: ${props => props.col};
+	transform: ${props => props.rotation};
+`;
+
+export { ItemsRow, Pipe, Image };

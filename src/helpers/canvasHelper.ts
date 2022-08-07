@@ -24,3 +24,22 @@ export const pipeRotations: any = {
 	// all sides
 	'╋': '╋',
 };
+
+export const pipeRotationsStyle: any = {
+	// one side -- closed side
+	'╸': 0,
+	'╹': 90,
+	'╺': 180,
+	'╻': 270,
+	'━': 0,
+	'┃': 90,
+	'┛': 0,
+	'┗': 90,
+	'┏': 180,
+	'┓': 270,
+	'┻': 0,
+	'┣': 90,
+	'┳': 180,
+	'┫': 270,
+	'╋': 0,
+};

@@ -1,5 +1,5 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import canvasSlice from '../store/canvas/canvas.slice';
+import canvasSlice from '../store/canvas';
 
 export const store = configureStore({
 	reducer: combineReducers({
