@@ -7,14 +7,17 @@ export interface LevelsProps {
 
 export const gameLevels = [1, 2, 3, 4, 5, 6];
 
-const Levels = ({ level, onLevelChange }: LevelsProps) => (
-	<LevelsWrapper>
-		{gameLevels.map(lvl => (
-			<LevelItem key={lvl} onClick={() => onLevelChange(lvl)}>
-				{lvl}
-			</LevelItem>
-		))}
-	</LevelsWrapper>
-);
+const Levels = ({ level, onLevelChange }: LevelsProps) => {
+
+	return (
+		<LevelsWrapper>
+			{gameLevels.map(lvl => (
+				<LevelItem key={lvl} onClick={() => onLevelChange(lvl)} selected={level === lvl}>
+					<span>{lvl}</span>
+				</LevelItem>
+			))}
+		</LevelsWrapper>
+	)
+};
 
 export default Levels;

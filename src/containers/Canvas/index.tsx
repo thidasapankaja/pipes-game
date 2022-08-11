@@ -1,14 +1,21 @@
+import { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import useWebSocket, { ReadyState } from 'react-use-websocket';
 
-import GameCanvas from '../../components/gameCanvas';
-import Levels from '../../components/levels';
 import { RootState } from '../../app/store';
 import { rotatePipe, setPipesCanvas } from '../../store/canvas';
-import { useCallback, useEffect } from 'react';
-import { setMessage, setWebsocketStatus } from '../../store/websocket';
+import {
+	setMessage,
+	setWebsocketStatus,
+	setGameLevel,
+} from '../../store/websocket';
 import { usePrevious } from '../../app/hooks';
-import { Button, DivCentered } from './styles';
+
+import { Button, DivCentered, Title } from './styles';
+
+import Toast from '../../components/Toast';
+import GameCanvas from '../../components/GameCanvas';
+import Levels from '../../components/Levels';
 
 export const WEBSOCKET_URL = process.env.REACT_APP_WEBSOCKET_URL || '';
 
@@ -38,6 +45,13 @@ const Canvas = () => {
 			dispatch(setMessage(message));
 		},
 		[dispatch, sendMessage]
+	);
+
+	const onLevelChange = useCallback(
+		(num: number) => {
+			dispatch(setGameLevel(num));
+		},
+		[dispatch]
 	);
 
 	useEffect(() => {
@@ -77,18 +91,26 @@ const Canvas = () => {
 			websocket.sentMessage === 'verify' &&
 			response?.includes(websocket.sentMessage)
 		) {
-			console.log(response);
+			if (response?.includes('Password')) {
+				onLevelChange(websocket.level + 1);
+			}
 		} else if (
 			websocket.sentMessage === 'help' &&
 			response?.includes(websocket.sentMessage)
 		) {
 			alert(response);
 		}
-	}, [dispatch, lastMessage, websocket.sentMessage]);
+	}, [
+		dispatch,
+		lastMessage,
+		onLevelChange,
+		websocket.level,
+		websocket.sentMessage,
+	]);
 
-	const onLevelChange = (num: number) => {
-		sendWebsocketMessage(`new ${num}`);
-	};
+	useEffect(() => {
+		sendWebsocketMessage(`new ${websocket.level}`);
+	}, [sendWebsocketMessage, websocket.level]);
 
 	const onPipeRotate = (pipe: [number, number]) => {
 		sendWebsocketMessage(`rotate ${pipe[1]} ${pipe[0]}`);
@@ -99,24 +121,21 @@ const Canvas = () => {
 		sendWebsocketMessage(`verify`);
 	};
 
-	// const onHelp = () => {
-	// 	sendWebsocketMessage(`help`);
-	// };
-
 	return (
-		<div style={{ width: '800px' }}>
+		<div>
 			<DivCentered>
-				<h1>Pipes</h1>
+				<Title>Play Pipes Puzzle</Title>
 			</DivCentered>
 			<DivCentered>
-				<Levels level={0} onLevelChange={onLevelChange} />
+				<Levels level={websocket.level} onLevelChange={onLevelChange} />
 			</DivCentered>
 			<DivCentered style={{ padding: '30px' }}>
 				<GameCanvas pipes={canvas.pipes} rotatePipe={onPipeRotate} />
 			</DivCentered>
 			<DivCentered>
-				<Button onClick={onVerify}>VERIFY !</Button>
+				<Button onClick={onVerify}>VERIFY</Button>
 			</DivCentered>
+			<Toast message={lastMessage} level={websocket.level} />
 		</div>
 	);
 };

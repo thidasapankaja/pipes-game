@@ -7,13 +7,11 @@ export type Coordinate = number[];
 
 export interface CanvasState {
 	pipes: PipesMap;
-	level: number;
 	rotations: Coordinate[];
 }
 
 const initialState: CanvasState = {
 	pipes: [],
-	level: 1,
 	rotations: [],
 };
 
@@ -23,9 +21,6 @@ export const canvasSlice = createSlice({
 	reducers: {
 		setPipesCanvas: (state, action: PayloadAction<PipesMap>) => {
 			state.pipes = action.payload;
-		},
-		setGameLevel: (state, action: PayloadAction<number>) => {
-			state.level = action.payload;
 		},
 		rotatePipe: (state, action: PayloadAction<[number, number]>) => {
 			const [y, x] = action.payload;
@@ -39,6 +34,6 @@ export const canvasSlice = createSlice({
 	},
 });
 
-export const { setPipesCanvas, setGameLevel, rotatePipe } = canvasSlice.actions;
+export const { setPipesCanvas, rotatePipe } = canvasSlice.actions;
 
 export default canvasSlice.reducer;

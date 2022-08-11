@@ -9,12 +9,24 @@ const LevelsWrapper = styled.div`
 	align-items: center;
 `;
 
-const LevelItem = styled.div`
+interface LevelItemProps {
+	selected: boolean;
+}
+
+const LevelItem = styled.div<LevelItemProps>`
 	font-size: 36px;
 	width: 50px;
 	height: 50px;
 	display: flex;
 	justify-content: center;
+	background: ${(props: LevelItemProps) =>
+		props.selected ? '#0096FF' : '#72FFFF'};
+	margin: 0 2px;
+	border-radius: 3px;
+
+	&:hover {
+		background: #00d7ff;
+	}
 `;
 
 export { LevelsWrapper, LevelItem };

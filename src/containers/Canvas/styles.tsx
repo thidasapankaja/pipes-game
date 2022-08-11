@@ -32,3 +32,9 @@ export const DivCentered = styled.div`
 	display: flex;
 	justify-content: center;
 `;
+
+export const Title = styled.div`
+	margin: 20px 0;
+	font-size: 48px;
+	font-weight: 800;
+`;

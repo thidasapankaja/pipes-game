@@ -1,10 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ReadyState } from 'react-use-websocket';
-
-export type Level = 1 | 2 | 3 | 4 | 5 | 6;
-
 export interface WebsocketState {
-	level: Level;
+	level: number;
 	status: ReadyState;
 	sentMessage: string;
 }
@@ -19,7 +16,7 @@ export const websocketSlice = createSlice({
 	name: 'websocket',
 	initialState,
 	reducers: {
-		setGameLevel: (state, action: PayloadAction<Level>) => {
+		setGameLevel: (state, action: PayloadAction<number>) => {
 			state.level = action.payload;
 		},
 		setWebsocketStatus: (state, action: PayloadAction<ReadyState>) => {

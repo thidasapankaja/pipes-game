@@ -1,4 +1,4 @@
-@import-normalize;
+/* @import-normalize; */
 @import url('https://fonts.googleapis.com/css2?family=Cormorant:wght@700&family=Lato:wght@400;700&display=swap');
 
 body {
@@ -6,5 +6,6 @@ body {
   font-family: 'Lato';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #F7ECDE;
 }
 
