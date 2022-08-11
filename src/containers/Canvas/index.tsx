@@ -13,8 +13,8 @@ import { usePrevious } from '../../app/hooks';
 
 import { Button, DivCentered, Title } from './styles';
 
-import Toast from '../../components/Toast';
 import GameCanvas from '../../components/GameCanvas';
+import Toast from '../../components/Toast';
 import Levels from '../../components/Levels';
 
 export const WEBSOCKET_URL = process.env.REACT_APP_WEBSOCKET_URL || '';
