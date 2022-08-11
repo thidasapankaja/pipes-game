@@ -42,7 +42,7 @@ export interface LevelsProps {
 
 const GameCanvas = ({ pipes, rotatePipe }: LevelsProps) => {
 	return (
-		<div style={{ fontSize: '42px' }}>
+		<div>
 			{pipes?.map((row, rowIndex) => (
 				<ItemsRow key={rowIndex}>
 					{row?.map((col, colIndex) => {

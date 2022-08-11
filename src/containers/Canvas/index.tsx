@@ -9,7 +9,6 @@ import {
 	setWebsocketStatus,
 	setGameLevel,
 } from '../../store/websocket';
-import { usePrevious } from '../../app/hooks';
 
 import { Button, DivCentered, Title } from './styles';
 
@@ -37,8 +36,6 @@ const Canvas = () => {
 		[ReadyState.UNINSTANTIATED]: 'Uninstantiated',
 	}[readyState];
 
-	const previousConnectionStatus = usePrevious(connectionStatus);
-
 	const sendWebsocketMessage = useCallback(
 		(message: any) => {
 			sendMessage(message);
@@ -48,25 +45,17 @@ const Canvas = () => {
 	);
 
 	const onLevelChange = useCallback(
-		(num: number) => {
-			dispatch(setGameLevel(num));
+		(level: number, isUp: boolean) => {
+			dispatch(setGameLevel({ level, isUp }));
 		},
 		[dispatch]
 	);
 
 	useEffect(() => {
-		if (
-			previousConnectionStatus === 'Connecting' &&
-			connectionStatus === 'Open'
-		) {
+		if (connectionStatus === 'Open') {
 			sendWebsocketMessage(`new ${websocket.level}`);
 		}
-	}, [
-		connectionStatus,
-		previousConnectionStatus,
-		sendWebsocketMessage,
-		websocket.level,
-	]);
+	}, [connectionStatus, sendWebsocketMessage, websocket.level]);
 
 	useEffect(() => {
 		if (websocket.sentMessage.includes('new')) {
@@ -92,7 +81,7 @@ const Canvas = () => {
 			response?.includes(websocket.sentMessage)
 		) {
 			if (response?.includes('Password')) {
-				onLevelChange(websocket.level + 1);
+				onLevelChange(0, true);
 			}
 		} else if (
 			websocket.sentMessage === 'help' &&
@@ -100,12 +89,7 @@ const Canvas = () => {
 		) {
 			alert(response);
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [dispatch, lastMessage, onLevelChange, websocket.sentMessage]);
-
-	useEffect(() => {
-		sendWebsocketMessage(`new ${websocket.level}`);
-	}, [sendWebsocketMessage, websocket.level]);
 
 	const onPipeRotate = (pipe: [number, number]) => {
 		sendWebsocketMessage(`rotate ${pipe[1]} ${pipe[0]}`);
