@@ -31,10 +31,14 @@ export const Button = styled.button`
 export const DivCentered = styled.div`
 	display: flex;
 	justify-content: center;
+	align-items: center;
 `;
 
-export const Title = styled.div`
+export const Title = styled.text`
 	margin: 20px 0;
 	font-size: 48px;
 	font-weight: 800;
+	height: 100px;
+	display: flex;
+	align-items: center;
 `;
