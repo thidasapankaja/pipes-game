@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ReadyState } from 'react-use-websocket';
+
 export interface WebsocketState {
 	level: number;
 	status: ReadyState;

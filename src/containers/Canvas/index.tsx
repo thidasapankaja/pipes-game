@@ -59,20 +59,20 @@ const Canvas = () => {
 			previousConnectionStatus === 'Connecting' &&
 			connectionStatus === 'Open'
 		) {
-			sendWebsocketMessage('new 1');
+			sendWebsocketMessage(`new ${websocket.level}`);
 		}
 	}, [
 		connectionStatus,
 		previousConnectionStatus,
-		sendMessage,
 		sendWebsocketMessage,
+		websocket.level,
 	]);
 
 	useEffect(() => {
 		if (websocket.sentMessage.includes('new')) {
 			sendWebsocketMessage('map');
 		}
-	}, [sendMessage, sendWebsocketMessage, websocket.sentMessage]);
+	}, [sendWebsocketMessage, websocket.sentMessage]);
 
 	useEffect(() => {
 		const response = lastMessage?.data;
@@ -100,13 +100,8 @@ const Canvas = () => {
 		) {
 			alert(response);
 		}
-	}, [
-		dispatch,
-		lastMessage,
-		onLevelChange,
-		websocket.level,
-		websocket.sentMessage,
-	]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [dispatch, lastMessage, onLevelChange, websocket.sentMessage]);
 
 	useEffect(() => {
 		sendWebsocketMessage(`new ${websocket.level}`);
