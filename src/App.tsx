@@ -1,4 +1,3 @@
-import React from 'react';
 import Canvas from './containers/Canvas';
 
 function App() {
