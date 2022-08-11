@@ -1,5 +1,5 @@
 import { PipesMap } from '../../store/canvas';
-import { ItemsRow, Pipe, Image } from './styles';
+import { ItemsRow, Pipe, Image, CanvasContainer } from './styles';
 
 import type1 from '../../assets/type1.png';
 import type2 from '../../assets/type2.png';
@@ -42,7 +42,7 @@ export interface LevelsProps {
 
 const GameCanvas = ({ pipes, rotatePipe }: LevelsProps) => {
 	return (
-		<div>
+		<CanvasContainer>
 			{pipes?.map((row, rowIndex) => (
 				<ItemsRow key={rowIndex}>
 					{row?.map((col, colIndex) => {
@@ -63,7 +63,7 @@ const GameCanvas = ({ pipes, rotatePipe }: LevelsProps) => {
 					})}
 				</ItemsRow>
 			))}
-		</div>
+		</CanvasContainer>
 	);
 };
 

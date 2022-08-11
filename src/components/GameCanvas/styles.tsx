@@ -19,6 +19,32 @@ const Pipe = styled.div`
 	border-color: #22c3f47a;
 `;
 
+const CanvasContainer = styled.div`
+	overflow-x: scroll;
+	padding: 30px;
+
+	::-webkit-scrollbar {
+		width: 20px;
+	}
+
+	/* Track */
+	::-webkit-scrollbar-track {
+		box-shadow: inset 0 0 5px grey;
+		border-radius: 10px;
+	}
+
+	/* Handle */
+	::-webkit-scrollbar-thumb {
+		background: #21E1E1;
+		border-radius: 10px;
+	}
+
+	/* Handle on hover */
+	::-webkit-scrollbar-thumb:hover {
+		background: #3B9AE1;
+	}
+`;
+
 interface ImageProps {
 	src: string;
 	col: string;
@@ -31,4 +57,4 @@ const Image = styled.img<ImageProps>`
 	transform: ${props => props.rotation};
 `;
 
-export { ItemsRow, Pipe, Image };
+export { ItemsRow, Pipe, Image, CanvasContainer };
