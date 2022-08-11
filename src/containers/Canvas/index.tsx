@@ -13,7 +13,7 @@ import { usePrevious } from '../../app/hooks';
 
 import { Button, DivCentered, Title } from './styles';
 
-import GameCanvas from '../../components/GameCanvas';
+// import GameCanvas from '../../components/GameCanvas';
 import Toast from '../../components/Toast';
 import Levels from '../../components/Levels';
 
@@ -124,9 +124,9 @@ const Canvas = () => {
 			<DivCentered>
 				<Levels level={websocket.level} onLevelChange={onLevelChange} />
 			</DivCentered>
-			<DivCentered style={{ padding: '30px' }}>
+			{/* <DivCentered style={{ padding: '30px' }}>
 				<GameCanvas pipes={canvas.pipes} rotatePipe={onPipeRotate} />
-			</DivCentered>
+			</DivCentered> */}
 			<DivCentered>
 				<Button onClick={onVerify}>VERIFY</Button>
 			</DivCentered>
