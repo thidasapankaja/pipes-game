@@ -1,9 +1,11 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import canvasSlice from '../store/canvas/canvas.slice';
+import canvasSlice from '../store/canvas';
+import websocketSlice from '../store/websocket';
 
 export const store = configureStore({
 	reducer: combineReducers({
 		canvas: canvasSlice,
+		webSocket: websocketSlice,
 	}),
 });
 

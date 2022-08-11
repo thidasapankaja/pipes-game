@@ -1,5 +1,9 @@
 const GameItem = () => {
-	return <div>GAME Item</div>;
+	return (
+		<div>
+			<img src='../../assets/type1.png' alt='img' />
+		</div>
+	);
 };
 
 export default GameItem;
