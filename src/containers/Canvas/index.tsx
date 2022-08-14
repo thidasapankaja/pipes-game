@@ -108,7 +108,7 @@ const Canvas = () => {
 			<DivCentered>
 				<Levels level={websocket.level} onLevelChange={onLevelChange} />
 			</DivCentered>
-			<DivCentered style={{ padding: '30px' }}>
+			<DivCentered>
 				<GameCanvas pipes={canvas.pipes} rotatePipe={onPipeRotate} />
 			</DivCentered>
 			<DivCentered>
