@@ -45,7 +45,7 @@ const Toast = ({ message, level }: ToastProps) => {
 				//verify: Correct! Password: JustWarmingUp
 				const password = message?.data.split(':')[2]?.replace(/\s/g, '');
 				toast(<SuccessMessage level={level} password={password} />, {
-					autoClose: 1000,
+					autoClose: 3000,
 					closeOnClick: true,
 				});
 			}

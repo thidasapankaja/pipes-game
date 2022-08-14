@@ -6,6 +6,12 @@ yarn install
 yarn run
 ```
 
+## Used Technologies
+
+Typescript
+React
+Redux
+
 ## Passwords
 
 - level 1 : JustWarmingUp
