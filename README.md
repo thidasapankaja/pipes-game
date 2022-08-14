@@ -8,9 +8,9 @@ yarn run
 
 ## Used Technologies
 
-Typescript
-React
-Redux
+- Typescript
+- React
+- Redux
 
 ## Passwords
 
